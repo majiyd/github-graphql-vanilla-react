@@ -11,6 +11,15 @@ export const GET_USER = `
     user(login: "majiyd"){
       name
       url
+      repositories(first:5 ){
+        totalCount
+        edges{
+          node{
+            name
+            url
+          }
+        }
+      }
     }
   }
 `

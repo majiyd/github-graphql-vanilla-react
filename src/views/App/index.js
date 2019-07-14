@@ -1,17 +1,25 @@
 import React from "react";
 import styles from './App.module.css'
+import {Repositories} from '../Repositories'
 import GITHUB_GRAPHQL_CLIENT , {GET_USER} from '../../axios-config';
 
 class App extends React.Component {
-  state = {
-    user: 'majiyd'
+  constructor(props){
+    super(props)
+    this.state = {
+      user: 'majiyd',
+      url: 'null',
+      errors: null
+    }
+
   }
+  
   componentDidMount(){
     this.fetchFromGithub()
   }
   onChange = e => {
     this.setState({
-      path: e.target.value
+      user: e.target.value
     })
   }
   onSubmit = e => {
@@ -23,10 +31,18 @@ class App extends React.Component {
       .post('', {
         query: GET_USER
       })
-      .then(res => console.log(res))
+      .then(res => {
+        console.log(res.data.data.user.url)
+        console.log(this)
+        this.setState({
+          url: res.data.data.user.url,
+          errors: res.data.errors
+        })
+        
+      })
   }
   render() {
-    const { path } = this.state
+    const { user, url} = this.state
     return (
       <div className={styles.app}>
         <h1>GraphQl Client</h1>
@@ -40,7 +56,7 @@ class App extends React.Component {
                 type="text"
                 onChange={this.onChange}
                 className={styles.input}
-                value={path}
+                value={user}
               />
             </div>
             <button 
@@ -52,9 +68,7 @@ class App extends React.Component {
             border: '1px solid rgba(0, 0, 0, 0.1)',
             marginBottom: '4%'
           }}/>
-          <div>
-            <h1>Results</h1>
-          </div>
+          <Repositories name={user} url={url}/>
       </div>
     )
   }
