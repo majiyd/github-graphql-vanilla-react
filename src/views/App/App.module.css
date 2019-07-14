@@ -1,0 +1,49 @@
+.app{
+  padding: 4%;
+  height: 100vh;
+}
+h1{
+  text-align: center;
+  font-size: 2.5rem;
+}
+form{
+  margin: auto;
+  margin-top: 5%;
+  width: 90%;
+  max-width: 600px;
+  padding: 5% 3%;
+}
+input{
+  border-bottom: 2px solid #cccccce3;
+  width: 90%;
+  max-width: 400px;
+  background-color: #cccccc53;
+  padding: 6px;
+  margin: 3% 0;
+  display: grid;
+}
+
+.input:focus{
+  border-color:rgb(225, 0, 152);
+  outline: 0;
+  transition: border-color  1.97s;
+}
+
+.submit{
+  padding: 1% 5% 2% 5%;
+  font-size: 1.25rem;
+  border: 2px solid #E10098;
+  background-color: white;
+  border-radius: 4px;
+  font-weight: 300;
+  margin-top: 1%;
+  appearance: button;
+}
+.submit:hover{
+  background-color: #E10098;
+  color: white;
+  cursor: pointer;
+}
+.submit:active{
+  background-color: #E10098c2;
+}
