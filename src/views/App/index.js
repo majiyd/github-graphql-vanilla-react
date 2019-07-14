@@ -1,12 +1,13 @@
 import React from "react";
 import styles from './App.module.css'
+import GITHUB_GRAPHQL_CLIENT , {GET_USER} from '../../axios-config';
 
 class App extends React.Component {
   state = {
     user: 'majiyd'
   }
   componentDidMount(){
-
+    this.fetchFromGithub()
   }
   onChange = e => {
     this.setState({
@@ -14,7 +15,15 @@ class App extends React.Component {
     })
   }
   onSubmit = e => {
+    this.fetchFromGithub()
     e.preventDefault()
+  }
+  fetchFromGithub = () => {
+    GITHUB_GRAPHQL_CLIENT
+      .post('', {
+        query: GET_USER
+      })
+      .then(res => console.log(res))
   }
   render() {
     const { path } = this.state
