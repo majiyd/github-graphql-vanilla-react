@@ -16,7 +16,7 @@ class App extends React.Component {
   }
   
   componentDidMount(){
-    this.fetchFromGithub()
+    this.fetchFromGithub(this.state.user)
   }
   onChange = e => {
     this.setState({
@@ -24,28 +24,32 @@ class App extends React.Component {
     })
   }
   onSubmit = e => {
-    this.fetchFromGithub()
+    this.fetchFromGithub(this.state.user)
     e.preventDefault()
   }
-  fetchFromGithub = () => {
-    GITHUB_GRAPHQL_CLIENT
-      .post('', {
-        query: GET_USER
+  fetchFromGithub = (user) => {
+    GITHUB_GRAPHQL_CLIENT.post('', {
+        query: GET_USER,
+        variables: {user}
       })
       .then(res => {
+        console.log(res)
         this.setState({
           url: res.data.data.user.url,
-          errors: res.data.errors,
           repositories: res.data.data.user.repositories
         })
-        
+      })
+      .catch(err => {
+        this.setState({
+          errors: err
+        })
       })
   }
   render() {
-    const { user, url, repositories} = this.state
+    const { user, url, errors, repositories} = this.state
     return (
       <div className={styles.app}>
-        <h1>GraphQl Client</h1>
+        <h1>Github Client</h1>
           <form onSubmit={this.onSubmit} className={styles.form}>
             <div>
               <label htmlFor="github-user">
@@ -72,6 +76,7 @@ class App extends React.Component {
             name={user} 
             url={url} 
             repositories={repositories}
+            errors={errors}
           />
       </div>
     )

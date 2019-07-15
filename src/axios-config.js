@@ -7,8 +7,8 @@ const GITHUB_GRAPHQL_CLIENT = axios.create({
 })
 
 export const GET_USER = `
-  {
-    user(login: "majiyd"){
+  query ($user: String!){
+    user(login: $user){
       name
       url
       repositories(first:5 ){
