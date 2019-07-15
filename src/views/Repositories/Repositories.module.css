@@ -2,3 +2,9 @@
   padding: 5%;
   display: block;
 }
+.repos{
+  margin: 2% 0;
+}
+.repos li{
+  margin-bottom: 1%;
+}

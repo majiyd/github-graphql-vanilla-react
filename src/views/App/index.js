@@ -8,8 +8,9 @@ class App extends React.Component {
     super(props)
     this.state = {
       user: 'majiyd',
-      url: 'null',
-      errors: null
+      url: null,
+      errors: null,
+      repositories: []
     }
 
   }
@@ -32,17 +33,16 @@ class App extends React.Component {
         query: GET_USER
       })
       .then(res => {
-        console.log(res.data.data.user.url)
-        console.log(this)
         this.setState({
           url: res.data.data.user.url,
-          errors: res.data.errors
+          errors: res.data.errors,
+          repositories: res.data.data.user.repositories
         })
         
       })
   }
   render() {
-    const { user, url} = this.state
+    const { user, url, repositories} = this.state
     return (
       <div className={styles.app}>
         <h1>GraphQl Client</h1>
@@ -68,7 +68,11 @@ class App extends React.Component {
             border: '1px solid rgba(0, 0, 0, 0.1)',
             marginBottom: '4%'
           }}/>
-          <Repositories name={user} url={url}/>
+          <Repositories 
+            name={user} 
+            url={url} 
+            repositories={repositories}
+          />
       </div>
     )
   }
