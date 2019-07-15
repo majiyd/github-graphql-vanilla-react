@@ -14,7 +14,7 @@ export function Repositories(props){
             <ul className={styles.repos}>
               
               {props.repositories.edges.map(edge => (
-                <li key={edge.node.url}>{edge.node.name} <a href={edge.node.url}>{edge.node.url}</a></li>
+                <li key={edge.node.id}>{edge.node.name} <a href={edge.node.url}>{edge.node.url}</a></li>
               ))}
             </ul>
           </React.Fragment>
