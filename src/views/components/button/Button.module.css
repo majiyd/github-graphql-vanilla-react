@@ -1,0 +1,19 @@
+
+.primary{
+  padding: 1% 5% 2% 5%;
+  font-size: 1.25rem;
+  border: 2px solid #E10098;
+  background-color: white;
+  border-radius: 5px;
+  font-weight: 300;
+  margin-top: 1%;
+  appearance: button;
+}
+.primary:hover{
+  background-color: #E10098;
+  color: white;
+  cursor: pointer;
+}
+.primary:active{
+  background-color: #E10098c2;
+}

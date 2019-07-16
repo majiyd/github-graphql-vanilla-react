@@ -1,6 +1,7 @@
 import React from "react";
 import styles from './App.module.css'
 import {Repositories} from '../Repositories'
+import {Button} from '../components/Button'
 import GITHUB_GRAPHQL_CLIENT , {GET_USER} from '../../axios-config';
 
 class App extends React.Component {
@@ -12,7 +13,6 @@ class App extends React.Component {
       errors: null,
       repositories: []
     }
-
   }
   
   componentDidMount(){
@@ -41,7 +41,8 @@ class App extends React.Component {
         console.log(res)
         this.setState({
           url: res.data.data.user.url,
-          repositories: res.data.data.user.repositories
+          repositories: res.data.data.user.repositories,
+          errors: null
         })
       })
       .catch(err => {
@@ -68,10 +69,10 @@ class App extends React.Component {
                 value={user}
               />
             </div>
-            <button 
-              type="submit" 
-              className={styles.submit}
-            > Submit </button>
+            <Button 
+              type={'submit'} 
+              text={'Submit'}
+            />
           </form>
           <hr style={{
             border: '1px solid rgba(0, 0, 0, 0.1)',
