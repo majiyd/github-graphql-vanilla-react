@@ -27,10 +27,15 @@ class App extends React.Component {
     this.fetchFromGithub(this.state.user)
     e.preventDefault()
   }
-  fetchFromGithub = (user) => {
+  fetchMoreRepositories = () => {
+    const {endCursor} = this.state.repositories.pageInfo
+    this.fetchFromGithub(this.state.user, endCursor)
+    console.log('fetching more')
+  }
+  fetchFromGithub = (user, cursor) => {
     GITHUB_GRAPHQL_CLIENT.post('', {
         query: GET_USER,
-        variables: {user}
+        variables: {user, cursor}
       })
       .then(res => {
         console.log(res)
@@ -77,6 +82,7 @@ class App extends React.Component {
             url={url} 
             repositories={repositories}
             errors={errors}
+            onFetchMoreRepositories={this.fetchMoreRepositories}
           />
       </div>
     )

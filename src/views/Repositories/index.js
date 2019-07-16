@@ -17,6 +17,15 @@ export function Repositories(props){
                 <li key={edge.node.id}>{edge.node.name} <a href={edge.node.url}>{edge.node.url}</a></li>
               ))}
             </ul>
+            {props.repositories.pageInfo.hasNextPage ? (
+              <button 
+                onClick={props.onFetchMoreRepositories}
+              >Next</button>
+              ):(
+                <button disabled>Next</button>
+              )
+            }
+            
           </React.Fragment>
           
         )}

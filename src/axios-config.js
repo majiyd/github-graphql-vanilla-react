@@ -7,18 +7,26 @@ const GITHUB_GRAPHQL_CLIENT = axios.create({
 })
 
 export const GET_USER = `
-  query ($user: String!){
+  query (
+    $user: String!,
+    $cursor: String
+  ){
     user(login: $user){
       name
       url
-      repositories(first:5 ){
-        totalCount
+      repositories(first:5 after: $cursor ){
         edges{
           node{
             name
             url
             id
+            viewerHasStarred
           }
+        }
+        totalCount
+        pageInfo{
+          endCursor
+          hasNextPage
         }
       }
     }
