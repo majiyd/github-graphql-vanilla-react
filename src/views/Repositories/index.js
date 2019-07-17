@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './Repositories.module.css'
 import {Button} from '../components/Button'
+import {Star} from '../components/Star'
 
 export function Repositories(props){
   return(
@@ -15,7 +16,14 @@ export function Repositories(props){
             <ul className={styles.repos}>
               
               {props.repositories.edges.map(edge => (
-                <li key={edge.node.id}>{edge.node.name} <a href={edge.node.url}>{edge.node.url}</a></li>
+                <li key={edge.node.id}>
+                  <Star />
+                  {edge.node.name}
+                  #0366d6
+                  <a href={edge.node.url}>
+                    {edge.node.url}
+                  </a>
+                </li>
               ))}
             </ul>
             {props.repositories.pageInfo.hasNextPage ? (

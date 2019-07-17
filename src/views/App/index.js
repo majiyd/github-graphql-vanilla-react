@@ -71,7 +71,6 @@ class App extends React.Component {
             <Button 
               type={'submit'} 
               text={'Submit'}
-              
             />
           </form>
           <hr style={{
