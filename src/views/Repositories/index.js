@@ -17,12 +17,8 @@ export function Repositories(props){
               
               {props.repositories.edges.map(edge => (
                 <li key={edge.node.id}>
-                  <Star />
-                  {edge.node.name}
-                  #0366d6
-                  <a href={edge.node.url}>
-                    {edge.node.url}
-                  </a>
+                  <Star viewerHasStarred={edge.node.viewerHasStarred}/>
+                  {edge.node.name} <a href={edge.node.url}>{edge.node.url}</a>
                 </li>
               ))}
             </ul>
