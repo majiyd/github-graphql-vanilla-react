@@ -50,6 +50,12 @@ class App extends React.Component {
         })
       })
   }
+  starRepository = () => {
+    console.log('stared repo')
+  }
+  unStarRepository = () => {
+    console.log('Unstared repo')
+  }
   render() {
     const { user, url, errors, repositories} = this.state
     return (
@@ -83,6 +89,8 @@ class App extends React.Component {
             repositories={repositories}
             errors={errors}
             onFetchMoreRepositories={this.fetchMoreRepositories}
+            starRepository={this.starRepository}
+            unStarRepository={this.unStarRepository}
           />
       </div>
     )

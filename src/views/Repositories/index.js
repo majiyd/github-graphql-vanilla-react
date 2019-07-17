@@ -17,7 +17,11 @@ export function Repositories(props){
               
               {props.repositories.edges.map(edge => (
                 <li key={edge.node.id}>
-                  <Star viewerHasStarred={edge.node.viewerHasStarred}/>
+                  <Star 
+                    viewerHasStarred={edge.node.viewerHasStarred} 
+                    starRepository={props.starRepository}
+                    unStarRepository={props.unStarRepository}
+                  />
                   {edge.node.name} <a href={edge.node.url}>{edge.node.url}</a>
                 </li>
               ))}

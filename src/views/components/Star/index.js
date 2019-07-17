@@ -5,21 +5,21 @@ export function Star(props){
   switch (props.viewerHasStarred){
     case true: {
       return (
-        <span className={styles.star}>
+        <span className={styles.star} onClick={props.unStarRepository}>
           <abbr title='Unstar Repository'>&#9733;</abbr>
         </span>
       )
     }
     case false: {
       return (
-        <span className={styles.star}>
+        <span className={styles.star} onClick={props.starRepository}>
           <abbr title='Star Repository'>&#9734;</abbr>
         </span>
       )
     }
     default:
       return (
-        <span className={styles.star}>
+        <span className={styles.star} onClick={props.starRepository}>
           <abbr title='Star Repository'>&#9734;</abbr>
         </span>
       )
