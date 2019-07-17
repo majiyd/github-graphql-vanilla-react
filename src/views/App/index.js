@@ -38,7 +38,6 @@ class App extends React.Component {
         variables: {user, cursor}
       })
       .then(res => {
-        console.log(res)
         this.setState({
           url: res.data.data.user.url,
           repositories: res.data.data.user.repositories,
@@ -58,7 +57,7 @@ class App extends React.Component {
         <h1>Github Client</h1>
           <form onSubmit={this.onSubmit} className={styles.form}>
             <div>
-              <label htmlFor="github-user">
+              <label htmlFor="github-user" >
                 Get all repos by:
               </label>
               <input 
@@ -72,6 +71,7 @@ class App extends React.Component {
             <Button 
               type={'submit'} 
               text={'Submit'}
+              
             />
           </form>
           <hr style={{

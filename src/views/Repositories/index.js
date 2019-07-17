@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Repositories.module.css'
+import {Button} from '../components/Button'
 
 export function Repositories(props){
   return(
@@ -18,11 +19,14 @@ export function Repositories(props){
               ))}
             </ul>
             {props.repositories.pageInfo.hasNextPage ? (
-              <button 
-                onClick={props.onFetchMoreRepositories}
-              >Next</button>
+              <Button 
+                text="Next" 
+                handleClick={props.onFetchMoreRepositories}/>
               ):(
-                <button disabled>Next</button>
+                <Button 
+                  text="Next"
+                  isDisabled={true}
+                />
               )
             }
             

@@ -8,6 +8,7 @@
   font-weight: 300;
   margin-top: 1%;
   appearance: button;
+  cursor: pointer;
 }
 .primary:hover{
   background-color: #E10098;
@@ -16,4 +17,18 @@
 }
 .primary:active{
   background-color: #E10098c2;
+}
+.primary:disabled{
+  padding: 1% 5% 2% 5%;
+  font-size: 1.25rem;
+  border-radius: 5px;
+  font-weight: 300;
+  margin-top: 1%;
+  appearance: button;
+  cursor: not-allowed;
+  border: 2px solid #ccc;
+  background-color:#ccc;
+}
+.primary:disabled:hover{
+  color: #808080;
 }
