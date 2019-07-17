@@ -13,6 +13,7 @@ class App extends React.Component {
       errors: null,
       repositories: []
     }
+    this.starRepository = this.starRepository.bind(this)
   }
   
   componentDidMount(){
@@ -50,8 +51,8 @@ class App extends React.Component {
         })
       })
   }
-  starRepository = () => {
-    console.log('stared repo')
+  starRepository = (id) => {
+    console.log('stared repo', id)
   }
   unStarRepository = () => {
     console.log('Unstared repo')
