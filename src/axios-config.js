@@ -41,4 +41,13 @@ export const STAR_REPOSITORY = `
     }
   }
 `
+export const UNSTAR_REPOSITORY = `
+  mutation ($repositoryId: ID!){
+    removeStar(input{starrableId: $repositoryId}) {
+      starrable{
+        viewerHasStarred
+      }
+    }
+  }
+`
 export default GITHUB_GRAPHQL_CLIENT
