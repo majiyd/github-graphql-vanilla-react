@@ -2,7 +2,7 @@ import axios from 'axios'
 const GITHUB_GRAPHQL_CLIENT = axios.create({
   baseURL: "https://api.github.com/graphql",
   headers: {
-    Authorization: `bearer a87aa383e8d6425592b3eac345230ff22357e11f`
+    Authorization: `bearer xxxxxx`
   },
 })
 
