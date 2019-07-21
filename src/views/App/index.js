@@ -2,7 +2,11 @@ import React from "react";
 import styles from './App.module.css'
 import {Repositories} from '../Repositories'
 import {Button} from '../components/Button'
-import GITHUB_GRAPHQL_CLIENT , {GET_USER, STAR_REPOSITORY} from '../../axios-config';
+import GITHUB_GRAPHQL_CLIENT , {
+  GET_USER, 
+  STAR_REPOSITORY,
+  UNSTAR_REPOSITORY
+} from '../../axios-config';
 
 class App extends React.Component {
   constructor(props){
@@ -52,7 +56,7 @@ class App extends React.Component {
       })
   }
   starRepository = (repositoryId) => {
-    console.log('starring..')
+    console.log('starring')
     return GITHUB_GRAPHQL_CLIENT.post('', {
       query: STAR_REPOSITORY,
       variables: {repositoryId}
@@ -80,8 +84,35 @@ class App extends React.Component {
         })
       })
   }
-  unStarRepository = () => {
-    console.log('Unstared repo')
+  unStarRepository = (repositoryId) => {
+    console.log('unstarring')
+    return GITHUB_GRAPHQL_CLIENT.post('', {
+      query: UNSTAR_REPOSITORY,
+      variables: {repositoryId}
+    })
+      .then(res => {
+        const newEdges = this.state.repositories.edges.map(edge => {
+          if (edge.node.id === repositoryId){
+            const newEdge = {
+              ...edge,
+              node: {
+                ...edge.node,
+                viewerHasStarred: false
+              }
+              
+            }
+            return newEdge
+          } else {
+            return edge
+          }
+        })
+        return this.setState({
+          repositories: {
+            ...this.state.repositories,
+            edges: newEdges
+          }
+        })
+      })
   }
   render() {
     const { user, url, errors, repositories} = this.state
