@@ -4,6 +4,7 @@ import {Repositories} from '../Repositories'
 import {Button} from '../components/Button'
 import GITHUB_GRAPHQL_CLIENT , {
   GET_USER, 
+  FETCH_PREVIOUS_REPOSITORIES,
   STAR_REPOSITORY,
   UNSTAR_REPOSITORY
 } from '../../axios-config';
@@ -60,7 +61,23 @@ class App extends React.Component {
     
   }
   fetchPreviousRepositories = () => {
-    console.log('fetching prev repos')
+    const searchingUser = this.state.searchingUser
+    const {endCursor} = this.state.repositories.pageInfo
+    GITHUB_GRAPHQL_CLIENT.post('', {
+      query: FETCH_PREVIOUS_REPOSITORIES,
+      variables: {searchingUser, endCursor}
+    })
+    .then(res => {
+      this.setState({
+        repositories: res.data.data.user.repositories,
+        errors: null,
+      })
+    })
+    .catch(err => {
+      this.setState({
+        errors: err
+      })
+    })
   }
   starRepository = (repositoryId) => {
     console.log('starring')

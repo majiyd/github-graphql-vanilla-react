@@ -33,6 +33,34 @@ export const GET_USER = `
     }
   }
 `
+export const FETCH_PREVIOUS_REPOSITORIES = `
+  query (
+    $user: String!,
+    $cursor: String
+  ){
+    user(login: $user){
+      name
+      url
+      repositories(last:5 before: $cursor ){
+        edges{
+          node{
+            name
+            url
+            id
+            viewerHasStarred
+          }
+        }
+        totalCount
+        pageInfo{
+          endCursor
+          hasNextPage
+          hasPreviousPage
+        }
+      }
+    }
+  }
+`
+
 export const STAR_REPOSITORY = `
   mutation ($repositoryId: ID!){
     addStar(input:{starrableId: $repositoryId}){
