@@ -71,9 +71,9 @@ export const STAR_REPOSITORY = `
   }
 `
 export const UNSTAR_REPOSITORY = `
-  mutation ($repositoryId: ID!){
-    removeStar(input{starrableId: $repositoryId}) {
-      starrable{
+  mutation ($repositoryId: ID!) {
+    removeStar(input: { starrableId: $repositoryId }) {
+      starrable {
         viewerHasStarred
       }
     }

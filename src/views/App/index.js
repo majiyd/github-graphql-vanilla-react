@@ -113,6 +113,7 @@ class App extends React.Component {
       variables: {repositoryId}
     })
       .then(res => {
+        console.log(res)
         const newEdges = this.state.repositories.edges.map(edge => {
           if (edge.node.id === repositoryId){
             const newEdge = {
