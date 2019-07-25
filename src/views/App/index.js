@@ -2,6 +2,8 @@ import React from "react";
 import styles from './App.module.css'
 import {Repositories} from '../Repositories'
 import {Button} from '../components/Button'
+import Login from '../Login'
+
 import GITHUB_GRAPHQL_CLIENT , {
   GET_USER, 
   FETCH_PREVIOUS_REPOSITORIES,
@@ -113,7 +115,6 @@ class App extends React.Component {
       variables: {repositoryId}
     })
       .then(res => {
-        console.log(res)
         const newEdges = this.state.repositories.edges.map(edge => {
           if (edge.node.id === repositoryId){
             const newEdge = {
@@ -141,6 +142,7 @@ class App extends React.Component {
     const { user, url, errors, repositories} = this.state
     return (
       <div className={styles.app}>
+        <Login />
         <h1>Github Client</h1>
           <form onSubmit={this.onSubmit} className={styles.form}>
             <div>
