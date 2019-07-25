@@ -56,6 +56,11 @@ class App extends React.Component {
           errors: err
         })
       })
+    
+    
+  }
+  fetchPreviousRepositories = () => {
+    console.log('fetching prev repos')
   }
   starRepository = (repositoryId) => {
     console.log('starring')
@@ -149,6 +154,7 @@ class App extends React.Component {
             repositories={repositories}
             errors={errors}
             onFetchMoreRepositories={this.fetchMoreRepositories}
+            onFetchPreviousRepositories={this.fetchPreviousRepositories}
             starRepository={this.starRepository}
             unStarRepository={this.unStarRepository}
           />

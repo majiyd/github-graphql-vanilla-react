@@ -27,6 +27,17 @@ export function Repositories(props){
                 </li>
               ))}
             </ul>
+            {props.repositories.pageInfo.hasPreviousPage ? (
+              <Button 
+                text="Prev" 
+                handleClick={props.onFetchPreviousRepositories}/>
+              ):(
+                <Button 
+                  text="Prev"
+                  isDisabled={true}
+                />
+              )
+            }
             {props.repositories.pageInfo.hasNextPage ? (
               <Button 
                 text="Next" 

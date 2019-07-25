@@ -27,6 +27,7 @@ export const GET_USER = `
         pageInfo{
           endCursor
           hasNextPage
+          hasPreviousPage
         }
       }
     }
