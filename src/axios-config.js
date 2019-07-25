@@ -41,7 +41,7 @@ export const FETCH_PREVIOUS_REPOSITORIES = `
     user(login: $user){
       name
       url
-      repositories(last:5 before: $cursor ){
+      repositories(first:5 before: $cursor ){
         edges{
           node{
             name

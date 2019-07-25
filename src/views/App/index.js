@@ -37,7 +37,7 @@ class App extends React.Component {
   fetchMoreRepositories = () => {
     const {endCursor} = this.state.repositories.pageInfo
     this.fetchFromGithub(this.state.searchingUser, endCursor)
-    console.log('fetching more')
+    
   }
   fetchFromGithub = (user, cursor) => {
     GITHUB_GRAPHQL_CLIENT.post('', {
@@ -61,11 +61,11 @@ class App extends React.Component {
     
   }
   fetchPreviousRepositories = () => {
-    const searchingUser = this.state.searchingUser
+    const user = this.state.searchingUser
     const {endCursor} = this.state.repositories.pageInfo
     GITHUB_GRAPHQL_CLIENT.post('', {
       query: FETCH_PREVIOUS_REPOSITORIES,
-      variables: {searchingUser, endCursor}
+      variables: {user, endCursor}
     })
     .then(res => {
       this.setState({
@@ -80,7 +80,6 @@ class App extends React.Component {
     })
   }
   starRepository = (repositoryId) => {
-    console.log('starring')
     return GITHUB_GRAPHQL_CLIENT.post('', {
       query: STAR_REPOSITORY,
       variables: {repositoryId}
@@ -109,7 +108,6 @@ class App extends React.Component {
       })
   }
   unStarRepository = (repositoryId) => {
-    console.log('unstarring')
     return GITHUB_GRAPHQL_CLIENT.post('', {
       query: UNSTAR_REPOSITORY,
       variables: {repositoryId}
