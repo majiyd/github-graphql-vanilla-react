@@ -13,6 +13,7 @@ class App extends React.Component {
     super(props)
     this.state = {
       user: 'majiyd',
+      searchingUser: null,
       url: null,
       errors: null,
       repositories: []
@@ -34,7 +35,7 @@ class App extends React.Component {
   }
   fetchMoreRepositories = () => {
     const {endCursor} = this.state.repositories.pageInfo
-    this.fetchFromGithub(this.state.user, endCursor)
+    this.fetchFromGithub(this.state.searchingUser, endCursor)
     console.log('fetching more')
   }
   fetchFromGithub = (user, cursor) => {
@@ -46,7 +47,8 @@ class App extends React.Component {
         this.setState({
           url: res.data.data.user.url,
           repositories: res.data.data.user.repositories,
-          errors: null
+          errors: null,
+          searchingUser: res.data.data.user.name,
         })
       })
       .catch(err => {
