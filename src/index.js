@@ -11,7 +11,7 @@ class Root extends React.Component {
     super(props);
     this.state = { 
       token: null,
-      isFetching: true
+      isFetching: false
     }
   }
   render() { 
@@ -36,11 +36,11 @@ class Root extends React.Component {
           unSetFetchingToFalse: () => {
             this.setState({isFetching: false})
           },
-          setToken: token => {
+          setToken: (token) => {
             this.setState({token: token})
           }
         }}>
-          <App />
+          <App token={this.state.token}/>
         </UserProvider>
       </div>
     );

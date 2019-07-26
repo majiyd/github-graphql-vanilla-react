@@ -12,16 +12,15 @@ class Login extends React.Component {
     const code =
       window.location.href.match(/\?code=(.*)/) &&
       window.location.href.match(/\?code=(.*)/)[1];
-    console.log(code);
     if (code) {
-      console.log(this.context);
+      this.context.setFetchingToTrue()
       fetch(
         `https://simple-github-graphql-client.herokuapp.com/authenticate/${code}`
       )
         .then(response => response.json())
         .then(({ token }) => {
           this.context.unSetFetchingToFalse()
-          console.log(this.context)
+          this.context.setToken(token)
         });
     }
   }
@@ -30,6 +29,7 @@ class Login extends React.Component {
       <div>
         <a
           href={`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=user&redirect_uri=${REDIRECT_URI}`}
+          onClick={()=>{this.context.setFetchingToTrue()}}
         >
           Login
         </a>

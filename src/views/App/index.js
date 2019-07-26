@@ -3,7 +3,6 @@ import styles from './App.module.css'
 import {Repositories} from '../Repositories'
 import {Button} from '../components/Button'
 import Login from '../Login'
-import {UserContext, UserConsumer} from '../../index'
 
 import GITHUB_GRAPHQL_CLIENT , {
   GET_USER, 
