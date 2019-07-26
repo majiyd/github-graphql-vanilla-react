@@ -1,31 +1,27 @@
 import React from 'react';
+import * as context from '../../context.js'
+
+//ever heard of cyclic dependencies? don't ever make that mistake again
 
 const CLIENT_ID = "ae2ae2dbb55737a71a4c";
 const REDIRECT_URI = "http://localhost:3000/";
 
 class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      status: "initial",
-      token: null
-    };
-  }
-
+  static contextType = context.UserContext;
   componentDidMount() {
     const code =
       window.location.href.match(/\?code=(.*)/) &&
       window.location.href.match(/\?code=(.*)/)[1];
-      console.log(code)
+    console.log(code);
     if (code) {
-      this.setState({ status: 'loading' });
-      fetch(`https://simple-github-graphql-client.herokuapp.com/authenticate/${code}`)
+      console.log(this.context);
+      fetch(
+        `https://simple-github-graphql-client.herokuapp.com/authenticate/${code}`
+      )
         .then(response => response.json())
         .then(({ token }) => {
-          this.setState({
-            token,
-            status: 'finished'
-          });
+          this.context.unSetFetchingToFalse()
+          console.log(this.context)
         });
     }
   }
@@ -42,4 +38,6 @@ class Login extends React.Component {
   }
 }
 
+
+Login.contextType = context.UserContext;
 export default Login;

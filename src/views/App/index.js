@@ -3,6 +3,7 @@ import styles from './App.module.css'
 import {Repositories} from '../Repositories'
 import {Button} from '../components/Button'
 import Login from '../Login'
+import {UserContext, UserConsumer} from '../../index'
 
 import GITHUB_GRAPHQL_CLIENT , {
   GET_USER, 
@@ -19,7 +20,7 @@ class App extends React.Component {
       searchingUser: null,
       url: null,
       errors: null,
-      repositories: []
+      repositories: [],
     }
     this.starRepository = this.starRepository.bind(this)
   }
@@ -86,28 +87,28 @@ class App extends React.Component {
       query: STAR_REPOSITORY,
       variables: {repositoryId}
     })
-      .then( res => {
-        const newEdges = this.state.repositories.edges.map(edge => {
-          if(edge.node.id === repositoryId){
-            const newEdge = {
-              ...edge,
-              node:{
-                ...edge.node,
-                viewerHasStarred: true
-              }
+    .then( res => {
+      const newEdges = this.state.repositories.edges.map(edge => {
+        if(edge.node.id === repositoryId){
+          const newEdge = {
+            ...edge,
+            node:{
+              ...edge.node,
+              viewerHasStarred: true
             }
-            return newEdge
-          } else{
-            return edge
           }
-        })
-        return this.setState({
-          repositories:{
-            ...this.state.repositories,
-            edges: newEdges
-          }
-        })
+          return newEdge
+        } else{
+          return edge
+        }
       })
+      return this.setState({
+        repositories:{
+          ...this.state.repositories,
+          edges: newEdges
+        }
+      })
+    })
   }
   unStarRepository = (repositoryId) => {
     return GITHUB_GRAPHQL_CLIENT.post('', {
@@ -140,45 +141,48 @@ class App extends React.Component {
   }
   render() {
     const { user, url, errors, repositories} = this.state
-    return (
-      <div className={styles.app}>
-        <Login />
-        <h1>Github Client</h1>
-          <form onSubmit={this.onSubmit} className={styles.form}>
-            <div>
-              <label htmlFor="github-user" >
-                Get all repos by:
-              </label>
-              <input 
-                id="github-user"
-                type="text"
-                onChange={this.onChange}
-                className={styles.input}
-                value={user}
+    if (this.props.token) {
+      return (
+        <div className={styles.app}>
+          <h1>Github Client</h1>
+            <form onSubmit={this.onSubmit} className={styles.form}>
+              <div>
+                <label htmlFor="github-user" >
+                  Get all repos by:
+                </label>
+                <input 
+                  id="github-user"
+                  type="text"
+                  onChange={this.onChange}
+                  className={styles.input}
+                  value={user}
+                />
+              </div>
+              <Button 
+                type={'submit'} 
+                text={'Submit'}
               />
-            </div>
-            <Button 
-              type={'submit'} 
-              text={'Submit'}
+            </form>
+            <hr style={{
+              border: '1px solid rgba(0, 0, 0, 0.1)',
+              marginBottom: '4%'
+            }}/>
+            <Repositories 
+              name={user} 
+              url={url} 
+              repositories={repositories}
+              errors={errors}
+              onFetchMoreRepositories={this.fetchMoreRepositories}
+              onFetchPreviousRepositories={this.fetchPreviousRepositories}
+              starRepository={this.starRepository}
+              unStarRepository={this.unStarRepository}
             />
-          </form>
-          <hr style={{
-            border: '1px solid rgba(0, 0, 0, 0.1)',
-            marginBottom: '4%'
-          }}/>
-          <Repositories 
-            name={user} 
-            url={url} 
-            repositories={repositories}
-            errors={errors}
-            onFetchMoreRepositories={this.fetchMoreRepositories}
-            onFetchPreviousRepositories={this.fetchPreviousRepositories}
-            starRepository={this.starRepository}
-            unStarRepository={this.unStarRepository}
-          />
-      </div>
-    )
-  }
+        </div>
+      )
+    } else {
+      return( <Login />)
+    }   
+  }  
 }
 
 export default App;
