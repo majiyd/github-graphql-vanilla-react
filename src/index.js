@@ -20,10 +20,11 @@ class Root extends React.Component {
         {this.state.isFetching ? (
           <h3 style={{ 
             textAlign: "center",
-            position: 'absolute',
+            position: 'fixed',
             color: "#E10098",
             width: "100%",
-            zIndex: '-1'
+            zIndex: '3',
+            textShadow: "0 1px 2px rgba(255, 0, 152,.1)"
           }}>Loading...</h3>
         ) : (
           ""

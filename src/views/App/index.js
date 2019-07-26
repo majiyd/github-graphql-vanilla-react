@@ -3,7 +3,7 @@ import styles from './App.module.css'
 import {Repositories} from '../Repositories'
 import {Button} from '../components/Button'
 import Login from '../Login'
-
+import {UserContext} from '../../context'
 import GITHUB_GRAPHQL_CLIENT , {
   GET_USER, 
   FETCH_PREVIOUS_REPOSITORIES,
@@ -12,6 +12,7 @@ import GITHUB_GRAPHQL_CLIENT , {
 } from '../../axios-config';
 
 class App extends React.Component {
+  static contextType = UserContext;
   constructor(props){
     super(props)
     this.state = {
@@ -42,6 +43,7 @@ class App extends React.Component {
     
   }
   fetchFromGithub = (user, cursor) => {
+    this.context.setFetchingToTrue()
     GITHUB_GRAPHQL_CLIENT.post('', {
         query: GET_USER,
         variables: {user, cursor}
@@ -53,16 +55,19 @@ class App extends React.Component {
           errors: null,
           searchingUser: res.data.data.user.name,
         })
+        this.context.unSetFetchingToFalse()
       })
       .catch(err => {
         this.setState({
           errors: err
         })
+        this.context.unSetFetchingToFalse()
       })
     
     
   }
   fetchPreviousRepositories = () => {
+    this.context.setFetchingToTrue()
     const user = this.state.searchingUser
     const {endCursor} = this.state.repositories.pageInfo
     GITHUB_GRAPHQL_CLIENT.post('', {
@@ -74,19 +79,23 @@ class App extends React.Component {
         repositories: res.data.data.user.repositories,
         errors: null,
       })
+      this.context.unSetFetchingToFalse()
     })
     .catch(err => {
       this.setState({
         errors: err
       })
+      this.context.unSetFetchingToFalse()
     })
   }
   starRepository = (repositoryId) => {
+    this.context.setFetchingToTrue()
     return GITHUB_GRAPHQL_CLIENT.post('', {
       query: STAR_REPOSITORY,
       variables: {repositoryId}
     })
     .then( res => {
+      this.context.unSetFetchingToFalse()
       const newEdges = this.state.repositories.edges.map(edge => {
         if(edge.node.id === repositoryId){
           const newEdge = {
@@ -101,6 +110,7 @@ class App extends React.Component {
           return edge
         }
       })
+      
       return this.setState({
         repositories:{
           ...this.state.repositories,
@@ -108,13 +118,19 @@ class App extends React.Component {
         }
       })
     })
+    .catch(err => {
+      this.setState({errors: err})
+      this.context.unSetFetchingToFalse()
+    })
   }
   unStarRepository = (repositoryId) => {
+    this.context.setFetchingToTrue()
     return GITHUB_GRAPHQL_CLIENT.post('', {
       query: UNSTAR_REPOSITORY,
       variables: {repositoryId}
     })
       .then(res => {
+        this.context.unSetFetchingToFalse()
         const newEdges = this.state.repositories.edges.map(edge => {
           if (edge.node.id === repositoryId){
             const newEdge = {
@@ -130,12 +146,17 @@ class App extends React.Component {
             return edge
           }
         })
+        
         return this.setState({
           repositories: {
             ...this.state.repositories,
             edges: newEdges
           }
         })
+      })
+      .catch(err => {
+        this.setState({errors: err})
+        this.context.unSetFetchingToFalse()
       })
   }
   render() {
@@ -184,4 +205,5 @@ class App extends React.Component {
   }  
 }
 
+App.contextType = UserContext
 export default App;
