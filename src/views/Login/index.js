@@ -1,5 +1,6 @@
 import React from 'react';
 import * as context from '../../context.js'
+import styles from './Login.module.css'
 
 //ever heard of cyclic dependencies? don't ever make that mistake again
 
@@ -27,12 +28,26 @@ class Login extends React.Component {
   }
   render() {
     return (
-      <div>
+      <div className={styles.login}>
+        <h1> Github Client</h1>
+        <div style={{
+          marginBottom: "12%"
+        }}>
+          <p>This is a simple app built by <a href="https://github.com/majiyd">majiyd</a>. It is based on chapter 3 of Robin Wieruch's <a href="https://www.robinwieruch.de/graphql-tutorial/">graphQL  tutorial</a>.</p>
+          <p>In this app, you can search for github users, star or unstar their repositories</p>
+        </div>
         <a
           href={`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=user&redirect_uri=${REDIRECT_URI}`}
-          onClick={(e)=>{this.context.setFetchingToTrue()}}
+          onClick={()=>{this.context.setFetchingToTrue()}}
+          style={{
+            backgroundColor: "#E10098",
+            color: "white",
+            padding: " 2% 3%",
+            margin: "0 1%",
+            borderRadius: "3px",
+          }}
         >
-          Login
+          Signin with Github
         </a>
       </div>
     );
