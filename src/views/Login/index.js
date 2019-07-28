@@ -21,9 +21,7 @@ class Login extends React.Component {
         .then(({ token }) => {
           this.context.unSetFetchingToFalse()
           token ? (this.context.setToken(1)):(this.context.setToken(0))
-          // this.context.setToken(token)
           window.token = token
-          console.log('l', window.token)
         });
     }
   }

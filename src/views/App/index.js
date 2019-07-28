@@ -26,9 +26,6 @@ class App extends React.Component {
     this.starRepository = this.starRepository.bind(this)
   }
   
-  componentDidMount(){
-    console.log('mounted', this.state.user, window.token)
-  }
   onChange = e => {
     this.setState({
       user: e.target.value
@@ -179,7 +176,6 @@ class App extends React.Component {
   render() {
     const { user, url, errors, repositories} = this.state
     if (this.props.token) {
-      console.log(window.token)
       return (
         <div className={styles.app}>
           <h1>Github Client</h1>
