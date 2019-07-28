@@ -1,11 +1,3 @@
-import axios from 'axios'
-const GITHUB_GRAPHQL_CLIENT = axios.create({
-  baseURL: "https://api.github.com/graphql",
-  headers: {
-    Authorization: `bearer ${process.env.REACT_APP_GITHUB_GRAPHQL_PERSONAL_ACCESS_TOKEN}`
-  },
-})
-
 export const GET_USER = `
   query (
     $user: String!,
@@ -79,4 +71,3 @@ export const UNSTAR_REPOSITORY = `
     }
   }
 `
-export default GITHUB_GRAPHQL_CLIENT

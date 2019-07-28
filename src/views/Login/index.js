@@ -20,7 +20,10 @@ class Login extends React.Component {
         .then(response => response.json())
         .then(({ token }) => {
           this.context.unSetFetchingToFalse()
-          this.context.setToken(token)
+          token ? (this.context.setToken(1)):(this.context.setToken(0))
+          // this.context.setToken(token)
+          window.token = token
+          console.log('l', window.token)
         });
     }
   }
@@ -29,7 +32,7 @@ class Login extends React.Component {
       <div>
         <a
           href={`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=user&redirect_uri=${REDIRECT_URI}`}
-          onClick={()=>{this.context.setFetchingToTrue()}}
+          onClick={(e)=>{this.context.setFetchingToTrue()}}
         >
           Login
         </a>

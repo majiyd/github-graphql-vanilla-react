@@ -1,10 +1,11 @@
 import React from "react";
+import axios from 'axios'
 import styles from './App.module.css'
 import {Repositories} from '../Repositories'
 import {Button} from '../components/Button'
 import Login from '../Login'
 import {UserContext} from '../../context'
-import GITHUB_GRAPHQL_CLIENT , {
+import {
   GET_USER, 
   FETCH_PREVIOUS_REPOSITORIES,
   STAR_REPOSITORY,
@@ -26,7 +27,7 @@ class App extends React.Component {
   }
   
   componentDidMount(){
-    this.fetchFromGithub(this.state.user)
+    console.log('mounted', this.state.user, window.token)
   }
   onChange = e => {
     this.setState({
@@ -44,9 +45,13 @@ class App extends React.Component {
   }
   fetchFromGithub = (user, cursor) => {
     this.context.setFetchingToTrue()
-    GITHUB_GRAPHQL_CLIENT.post('', {
+    axios.post('https://api.github.com/graphql', {
         query: GET_USER,
         variables: {user, cursor}
+      }, {
+        headers: {
+          Authorization: `bearer ${window.token}`
+        }
       })
       .then(res => {
         this.setState({
@@ -70,9 +75,13 @@ class App extends React.Component {
     this.context.setFetchingToTrue()
     const user = this.state.searchingUser
     const {endCursor} = this.state.repositories.pageInfo
-    GITHUB_GRAPHQL_CLIENT.post('', {
+    axios.post('https://api.github.com/graphql', {
       query: FETCH_PREVIOUS_REPOSITORIES,
       variables: {user, endCursor}
+    }, {
+      headers: {
+        Authorization: `bearer ${window.token}`
+      }
     })
     .then(res => {
       this.setState({
@@ -90,9 +99,13 @@ class App extends React.Component {
   }
   starRepository = (repositoryId) => {
     this.context.setFetchingToTrue()
-    return GITHUB_GRAPHQL_CLIENT.post('', {
+    return axios.post('https://api.github.com/graphql', {
       query: STAR_REPOSITORY,
       variables: {repositoryId}
+    }, {
+      headers: {
+        Authorization: `bearer ${window.token}`
+      }
     })
     .then( res => {
       this.context.unSetFetchingToFalse()
@@ -125,43 +138,48 @@ class App extends React.Component {
   }
   unStarRepository = (repositoryId) => {
     this.context.setFetchingToTrue()
-    return GITHUB_GRAPHQL_CLIENT.post('', {
+    return axios.post('https://api.github.com/graphql', {
       query: UNSTAR_REPOSITORY,
       variables: {repositoryId}
+    }, {
+      headers: {
+        Authorization: `bearer ${window.token}`
+      }
     })
-      .then(res => {
-        this.context.unSetFetchingToFalse()
-        const newEdges = this.state.repositories.edges.map(edge => {
-          if (edge.node.id === repositoryId){
-            const newEdge = {
-              ...edge,
-              node: {
-                ...edge.node,
-                viewerHasStarred: false
-              }
-              
+    .then(res => {
+      this.context.unSetFetchingToFalse()
+      const newEdges = this.state.repositories.edges.map(edge => {
+        if (edge.node.id === repositoryId){
+          const newEdge = {
+            ...edge,
+            node: {
+              ...edge.node,
+              viewerHasStarred: false
             }
-            return newEdge
-          } else {
-            return edge
+            
           }
-        })
-        
-        return this.setState({
-          repositories: {
-            ...this.state.repositories,
-            edges: newEdges
-          }
-        })
+          return newEdge
+        } else {
+          return edge
+        }
       })
-      .catch(err => {
-        this.setState({errors: err})
-        this.context.unSetFetchingToFalse()
+      
+      return this.setState({
+        repositories: {
+          ...this.state.repositories,
+          edges: newEdges
+        }
       })
+    })
+    .catch(err => {
+      this.setState({errors: err})
+      this.context.unSetFetchingToFalse()
+    })
   }
   render() {
     const { user, url, errors, repositories} = this.state
     if (this.props.token) {
+      console.log(window.token)
       return (
         <div className={styles.app}>
           <h1>Github Client</h1>
