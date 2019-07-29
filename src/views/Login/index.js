@@ -37,7 +37,7 @@ class Login extends React.Component {
           <p>In this app, you can search for github users, star or unstar their repositories</p>
         </div>
         <a
-          href={`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=user&redirect_uri=${REDIRECT_URI}`}
+          href={`https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=user,repo&redirect_uri=${REDIRECT_URI}`}
           onClick={()=>{this.context.setFetchingToTrue()}}
           style={{
             backgroundColor: "#E10098",
