@@ -6,8 +6,7 @@ import {Button} from '../components/Button'
 import Login from '../Login'
 import {UserContext} from '../../context'
 import {
-  GET_USER, 
-  FETCH_PREVIOUS_REPOSITORIES,
+  GET_USER,
   STAR_REPOSITORY,
   UNSTAR_REPOSITORY
 } from '../../axios-config';
@@ -22,6 +21,7 @@ class App extends React.Component {
       url: null,
       errors: null,
       repositories: [],
+      cursors:[]
     }
     this.starRepository = this.starRepository.bind(this)
   }
@@ -32,6 +32,10 @@ class App extends React.Component {
     })
   }
   onSubmit = e => {
+    this.setState({
+      searchingUser: this.state.user,
+      cursors: []
+    })
     this.fetchFromGithub(this.state.user)
     e.preventDefault()
   }
@@ -55,7 +59,9 @@ class App extends React.Component {
           url: res.data.data.user.url,
           repositories: res.data.data.user.repositories,
           errors: null,
-          searchingUser: res.data.data.user.name,
+          cursors:[
+            ...this.state.cursors, res.data.data.user.repositories.pageInfo.endCursor
+          ]
         })
         this.context.unSetFetchingToFalse()
       })
@@ -65,34 +71,17 @@ class App extends React.Component {
         })
         this.context.unSetFetchingToFalse()
       })
-    
-    
   }
+
   fetchPreviousRepositories = () => {
     this.context.setFetchingToTrue()
+    const cursors = this.state.cursors.slice(0, -2)
+    this.setState({
+      cursors: cursors
+    })
     const user = this.state.searchingUser
-    const {endCursor} = this.state.repositories.pageInfo
-    axios.post('https://api.github.com/graphql', {
-      query: FETCH_PREVIOUS_REPOSITORIES,
-      variables: {user, endCursor}
-    }, {
-      headers: {
-        Authorization: `bearer ${window.token}`
-      }
-    })
-    .then(res => {
-      this.setState({
-        repositories: res.data.data.user.repositories,
-        errors: null,
-      })
-      this.context.unSetFetchingToFalse()
-    })
-    .catch(err => {
-      this.setState({
-        errors: err
-      })
-      this.context.unSetFetchingToFalse()
-    })
+    const cursor = cursors.slice(-1)[0]
+    this.fetchFromGithub(user, cursor)
   }
   starRepository = (repositoryId) => {
     this.context.setFetchingToTrue()
